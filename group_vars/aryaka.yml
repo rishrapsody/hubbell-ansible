@@ -1,4 +1,4 @@
 ---
-ansible_host: "ansible"
+ansible_user: "ansible"
 ansible_password: "ansible"
 
