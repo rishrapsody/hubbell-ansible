@@ -1,36 +1,34 @@
 ---
-
 all:
-	children:
-		aryaka:
-			hosts:
-				aryaka_spoke
-				aryaka_core
-		mpls:
-			hosts:
-				mpls_core
-				mpls_spoke
+  children:
+    aryaka:
+      hosts:
+        aryaka_spoke
+        aryaka_core
+    mpls:
+      hosts:
+        mpls_core
+        mpls_spoke
 
-		hubbell_shelton:
-			hosts:
-				shelton_core
-				shelton_r1
+    hubbell_shelton:
+      hosts:
+        shelton_core
+        shelton_r1
 
-		hubbell_plano:
-			hosts:
-				plano_core
-				plano_ntt_r1
-				plano_ntt_r2
+    hubbell_plano:
+      hosts:
+        plano_core
+        plano_ntt_r1
+        plano_ntt_r2
         
-		hubbell_dmvpn:
-			hosts:
-				dmvpn
-
+    hubbell_dmvpn:
+      hosts:
+        dmvpn
 
     hubbell:
-    	children:
-    		hubbell_shelton
-    		hubbell_plano
-    		hubbell_dmvpn
+      children:
+        hubbell_shelton
+        hubbell_plano
+        hubbell_dmvpn
 
 

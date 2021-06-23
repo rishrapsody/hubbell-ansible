@@ -1,0 +1,4 @@
+---
+ansible_host: "ansible"
+ansible_password: "ansible"
+
