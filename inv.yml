@@ -3,32 +3,32 @@ all:
   children:
     aryaka:
       hosts:
-        aryaka_spoke
-        aryaka_core
+        aryaka_spoke:
+        aryaka_core:
     mpls:
       hosts:
-        mpls_core
-        mpls_spoke
+        mpls_core:
+        mpls_spoke:
 
     hubbell_shelton:
       hosts:
-        shelton_core
-        shelton_r1
+        shelton_core:
+        shelton_r1:
 
     hubbell_plano:
       hosts:
-        plano_core
-        plano_ntt_r1
-        plano_ntt_r2
+        plano_core:
+        plano_ntt_r1:
+        plano_ntt_r2:
         
     hubbell_dmvpn:
       hosts:
-        dmvpn
+        dmvpn:
 
     hubbell:
       children:
-        hubbell_shelton
-        hubbell_plano
-        hubbell_dmvpn
+        hubbell_shelton:
+        hubbell_plano:
+        hubbell_dmvpn:
 
 
