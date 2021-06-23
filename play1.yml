@@ -7,7 +7,7 @@
   - name: "Backup existing config"
     ios_config:
       backup: "yes"
-        backup_options:
-          filename: "{{ inventory_hostname }}"
+      backup_options:
+        filename: "{{ inventory_hostname }}"
 
 
