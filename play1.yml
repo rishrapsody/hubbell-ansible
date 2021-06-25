@@ -11,3 +11,16 @@
         filename: "{{ inventory_hostname }}.txt"
 
 
+  - name: "Create output directory"
+    file:
+      path: "outputs"
+      state: directory
+    run_once: true
+
+  - name: "Fetch ASN number and save"
+    set_fact: 
+      my_var: "{{ lookup('file','{{ item }}') | regex_search('router bgp (.+)', '\\1') }}"
+      lineinfile:
+        path: outputs/ASN.txt
+        line: "{{ inventory_hostname }} : {{ my_var }}"
+    loop: "{{ lookup('file', 'backups/*.txt') }}"
