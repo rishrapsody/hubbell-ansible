@@ -23,4 +23,4 @@
       lineinfile:
         path: outputs/ASN.txt
         line: "{{ inventory_hostname }} : {{ my_var }}"
-    loop: "{{ lookup('file', 'backups/*.txt') }}"
+    loop: "{{ lookup('file', 'backup/*.txt') }}"

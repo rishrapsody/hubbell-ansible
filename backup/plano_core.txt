@@ -1,0 +1,131 @@
+Building configuration...
+
+Current configuration : 1847 bytes
+!
+! Last configuration change at 12:13:29 UTC Thu Jun 24 2021
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname Plano-Core
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name hubbel.plano.com
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username ansible privilege 15 secret 5 $1$T3Rb$0vnoJVzfkVS5pfWt/5EAp/
+!
+!
+ip tcp synwait-time 5
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback1
+ ip address 10.10.40.1 255.255.255.0
+!
+interface FastEthernet0/0
+ ip address 192.0.2.3 255.255.255.248
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface FastEthernet2/1
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface GigabitEthernet3/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+router bgp 123
+ bgp log-neighbor-changes
+ network 10.10.40.0 mask 255.255.255.0
+ neighbor 192.0.2.1 remote-as 56278
+ neighbor 192.0.2.1 soft-reconfiguration inbound
+ neighbor 192.0.2.1 route-map plano-to-aryaka out
+ neighbor 192.0.2.2 remote-as 30
+ neighbor 192.0.2.2 soft-reconfiguration inbound
+ neighbor 192.0.2.4 remote-as 40
+ neighbor 192.0.2.4 soft-reconfiguration inbound
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+ip prefix-list mpls-spokes seq 5 permit 172.16.10.0/24
+!
+route-map plano-to-aryaka deny 10
+ match ip address prefix-list mpls-spokes
+!
+route-map plano-to-aryaka permit 20
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+end

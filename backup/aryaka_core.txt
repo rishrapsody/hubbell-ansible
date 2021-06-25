@@ -1,0 +1,115 @@
+Building configuration...
+
+Current configuration : 1523 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname Aryaka
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name aryaka.com
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username ansible privilege 15 secret 5 $1$aDH3$1FQNxANvEXjOx90Po77Xt/
+!
+!
+ip tcp synwait-time 5
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 192.0.2.1 255.255.255.248
+ duplex full
+!
+interface FastEthernet1/0
+ ip address 192.0.2.9 255.255.255.248
+ duplex full
+!
+interface FastEthernet2/0
+ ip address 192.0.2.17 255.255.255.248
+ speed auto
+ duplex auto
+!
+interface FastEthernet2/1
+ ip address 192.168.1.1 255.255.255.0
+ speed auto
+ duplex auto
+!
+interface GigabitEthernet3/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+router bgp 56278
+ bgp log-neighbor-changes
+ network 192.168.1.0
+ neighbor 192.0.2.3 remote-as 123
+ neighbor 192.0.2.3 soft-reconfiguration inbound
+ neighbor 192.0.2.11 remote-as 456
+ neighbor 192.0.2.11 soft-reconfiguration inbound
+ neighbor 192.0.2.19 remote-as 11179
+ neighbor 192.0.2.19 soft-reconfiguration inbound
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+end
