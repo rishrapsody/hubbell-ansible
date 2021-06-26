@@ -1,6 +1,6 @@
 ---
 - name: "Hubbell Playbook"
-  hosts: aryaka_core
+  hosts: all
   connection: network_cli
 
   tasks:
@@ -17,14 +17,24 @@
       state: directory
     run_once: true
 
-  - name: "Fetch ASN number and save"
+  - name: "Create ASN file"
+    file:
+      path: "outputs/BGP_ASN_INFO.txt"
+      state: touch
+    run_once: true
+
+  - name: "Fetch ASN and save"
     block:
-      - name: "Get ASN"
+      - name: "Get BGP running config"
+        cli_command:
+          command: "show run | section router bgp"
+        register: asn
+ 
+      - name: "Grep ASN number"
         set_fact: 
-          my_var: "{{ lookup('file','{{ item }}') | regex_search('router bgp (.+)', '\\1') }}"
-        loop: "{{ lookup('fileglob', 'backup/*.txt') }}"
+          my_var: "{{ asn.stdout_lines[0] | regex_search('router bgp (.+)', '\\1') }}"
+
       - name: "Save ASN"
         lineinfile:
-          path: outputs/ASN.txt
-          line: "{{ inventory_hostname }} : {{ my_var }}"
-    ignore_errors: yes
+          path: outputs/BGP_ASN_INFO.txt
+          line: "{{ inventory_hostname }} : {{ my_var[0] }}"      
