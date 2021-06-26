@@ -1,6 +1,6 @@
 ---
 - name: "Hubbell Playbook"
-  hosts: all
+  hosts: aryaka_core
   connection: network_cli
 
   tasks:
@@ -22,7 +22,7 @@
       - name: "Get ASN"
         set_fact: 
           my_var: "{{ lookup('file','{{ item }}') | regex_search('router bgp (.+)', '\\1') }}"
-        loop: "{{ lookup('file', 'backup/*.txt') }}"
+        loop: "{{ lookup('fileglob', 'backup/*.txt') }}"
       - name: "Save ASN"
         lineinfile:
           path: outputs/ASN.txt
