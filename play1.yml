@@ -19,11 +19,11 @@
 
   - name: "Fetch ASN number and save"
     block:
-      -name: "Get ASN"
+      - name: "Get ASN"
         set_fact: 
           my_var: "{{ lookup('file','{{ item }}') | regex_search('router bgp (.+)', '\\1') }}"
         loop: "{{ lookup('file', 'backup/*.txt') }}"
-      -name: "Save ASN"
+      - name: "Save ASN"
         lineinfile:
           path: outputs/ASN.txt
           line: "{{ inventory_hostname }} : {{ my_var }}"
