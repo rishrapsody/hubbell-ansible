@@ -1,0 +1,6 @@
+---
+ansible_user: "admin"
+ansible_password: "Admin_1234!"
+ansible_network_os: "nxos"
+ansible_host: "sbx-nxos-mgmt.cisco.com"
+ansible_port: "80"
