@@ -38,6 +38,12 @@ all:
         hubbell_shelton:
         hubbell_plano:
         hubbell_dmvpn:
+        
+    cloud:
+      hosts:
+        ios_xe:
+        nx_os:
+        
   vars:
     ansible_user:
     ansible_host:
