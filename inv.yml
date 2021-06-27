@@ -14,6 +14,7 @@ all:
       hosts:
         shelton_core:
         shelton_r1:
+        shelton_fw:
 
     hubbell_plano:
       hosts:
@@ -27,6 +28,11 @@ all:
       hosts:
         dmvpn:
 
+    firewall:
+      children:
+        plano_fw:
+        shelton_fw:
+        
     hubbell:
       children:
         hubbell_shelton:
