@@ -1,0 +1,6 @@
+{% if ansible_network_os == 'ios' %}
+snmp-server community public RO
+snmp-server community gns3 RW
+snmp-server host 199.199.199.199 public
+snmp-server enable traps
+{% endif %}
