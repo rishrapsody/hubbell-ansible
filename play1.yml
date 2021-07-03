@@ -38,7 +38,7 @@
         lineinfile:
           path: outputs/BGP_ASN_INFO.txt
           line: "{{ inventory_hostname }} : {{ my_var[0] }}"   
-   when: ansible_network_os == 'ios'
+    when: ansible_network_os == 'ios'
    
   - name: "Configure SNMP"
     cli_config: "{{ lookup('template', 'snmp_template.j2') }}"
