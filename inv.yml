@@ -5,6 +5,7 @@ all:
       hosts:
         aryaka_spoke:
         aryaka_core:
+        toolbox:
     mpls:
       hosts:
         mpls_core:
