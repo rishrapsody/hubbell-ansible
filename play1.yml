@@ -41,4 +41,5 @@
     when: ansible_network_os == 'ios'
    
   - name: "Configure SNMP"
-    cli_config: "{{ lookup('template', 'snmp_template.j2') }}"
+    cli_config: 
+      config: "{{ lookup('template', 'snmp_template.j2') }}"

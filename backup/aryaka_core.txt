@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 1523 bytes
+Current configuration : 1561 bytes
 !
 version 15.2
 service timestamps debug datetime msec
@@ -71,13 +71,13 @@ interface FastEthernet2/1
  duplex auto
 !
 interface GigabitEthernet3/0
- no ip address
- shutdown
+ ip address 199.199.199.1 255.255.255.0
  negotiation auto
 !
 router bgp 56278
  bgp log-neighbor-changes
  network 192.168.1.0
+ network 199.199.199.0
  neighbor 192.0.2.3 remote-as 123
  neighbor 192.0.2.3 soft-reconfiguration inbound
  neighbor 192.0.2.11 remote-as 456
