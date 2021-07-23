@@ -5,7 +5,6 @@ all:
       hosts:
         aryaka_spoke:
         aryaka_core:
-        toolbox:
     mpls:
       hosts:
         mpls_core:
@@ -43,11 +42,5 @@ all:
     cloud:
       hosts:
         ios_xe:
-        nx_os:
-        
-  vars:
-    ansible_user:
-    ansible_host:
-    ansible_password:
-    
+        nx_os:    
 

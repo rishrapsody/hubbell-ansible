@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 1952 bytes
+Current configuration : 2027 bytes
 !
 version 15.2
 service timestamps debug datetime msec
@@ -69,8 +69,7 @@ interface FastEthernet2/0
  duplex auto
 !
 interface FastEthernet2/1
- no ip address
- shutdown
+ ip address 192.168.70.1 255.255.255.0
  speed auto
  duplex auto
 !
@@ -85,6 +84,7 @@ router bgp 456
  network 192.0.2.11 mask 255.255.255.255
  network 192.168.10.0
  network 192.168.20.0
+ network 192.168.70.0
  neighbor 192.0.2.9 remote-as 56278
  neighbor 192.0.2.9 soft-reconfiguration inbound
  neighbor 192.168.10.1 remote-as 789
@@ -98,6 +98,7 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 192.168.70.10
 !
 !
 ip prefix-list plano-core seq 5 permit 10.10.40.0/24

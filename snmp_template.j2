@@ -1,13 +1,11 @@
 {% if ansible_network_os == 'ios' %}
 snmp-server community public RO
-snmp-server community gns3 RW
+snmp-server community gns3 rw
 snmp-server host 199.199.199.199 public
 snmp-server enable traps
 {% elif ansible_network_os == 'ios_xe' %}
 
 {% elif ansible_network_os == 'nx_os' %}
-
-{% elif ansible_network_os == 'check_point.gaia.checkpoint' %}
 
 {% else %}
 
