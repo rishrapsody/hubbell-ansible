@@ -1,6 +1,6 @@
 ---
 - name: "Hubbell Playbook"
-  hosts: all
+  hosts: hubbell,aryaka,mpls,cloud
   connection: network_cli
 
   tasks:
