@@ -1,5 +1,5 @@
 ---
-- name: "Hubbell Playbook"
+- name: "Playbook on routers"
   hosts: hubbell,aryaka,mpls,cloud
   connection: network_cli
 
@@ -43,3 +43,13 @@
   - name: "Configure SNMP"
     cli_config: 
       config: "{{ lookup('template', 'snmp_template.j2') }}"
+      
+ - name: "Changes on firewall"
+   hosts: firewall
+   
+   tasks:
+   - name: "Enable node-exporter on firewall"
+     ansible.builtin.shell:
+        cmd: ./node_exporter &
+        chdir: node_exporter-1.1.2.linux-amd64/
+     
