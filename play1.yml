@@ -43,16 +43,17 @@
   - name: "Configure SNMP"
     cli_config: 
       config: "{{ lookup('template', 'snmp_template.j2') }}"
-  
-  - name: "Configure loopback”
-    cli_config:  
+      
+  - name: "Configure Loopback:
+    cli_config:
       commands:
-        - interface {{item.name}}
+        - interface {{ item.name }}
         - ip address {{ item.subnet | ipaddr(random(1,254)) }} 255.255.255.255
         - no shutdown
-      with items:
-        - { name: ‘Loopback127’, subnet:’192.168.127.0/24’ }
-        - { name: ‘Loopback128’, subnet:’192.168.128.0/24’ }
+      with_items:
+        - { name: "Loopback127", subnet: "192.168.127.0/24" }
+        - { name: "Loopback128", subnet: "192.168.128.0/24" }
+
 
 - name: "Changes on firewall"
   hosts: firewall
