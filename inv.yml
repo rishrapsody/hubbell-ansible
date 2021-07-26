@@ -27,7 +27,7 @@ all:
         dmvpn:
 
     firewall:
-      children:
+      hosts:
         plano_fw:
         shelton_fw:
         
