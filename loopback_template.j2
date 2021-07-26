@@ -1,0 +1,4 @@
+interface {{ item.name }}
+ip address {{ item.subnet | ipaddr('next_usable') }} 255.255.255.255
+no shutdown
+!

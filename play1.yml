@@ -46,17 +46,14 @@
       
   - name: "Configure Loopback"
     cli_config:
-      commands:
-        - interface "{{ item.name }}"
-        - ip address "{{ item.subnet | ipaddr(random(1,254)) }}" 255.255.255.255
-        - no shutdown
-      with_items:
-        - { name: 'Loopback127', subnet: '192.168.127.0/24' }
-        - { name: 'Loopback128', subnet: '192.168.128.0/24' }
+      config: "{{ lookup('template', 'loopback_template.j2') }}"
+    with_items:
+      - { name: 'Loopback127', subnet: '192.168.127.0/24' }
+      - { name: 'Loopback128', subnet: '192.168.128.0/24' }
 
 
 - name: "Changes on firewall"
-  hosts: firewall
+  hosts: plano_fw,shelton_fw
 
   tasks:
   - name: "Enable node-exporter on firewall"
