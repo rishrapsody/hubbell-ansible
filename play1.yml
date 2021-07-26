@@ -45,8 +45,8 @@
       config: "{{ lookup('template', 'snmp_template.j2') }}"
   
   - name: "Configure loopback”
-    ansible.netcommon.cli_config:  
-      command:
+    cli_config:  
+      commands:
         - interface {{item.name}}
         - ip address {{ item.subnet | ipaddr(random(1,254)) }} 255.255.255.255
         - no shutdown
