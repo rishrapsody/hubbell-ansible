@@ -58,6 +58,6 @@
   tasks:
   - name: "Enable node-exporter on firewall"
     shell: 
-      cmd: ./node_exporter &
+      cmd: "nohup ./node_exporter &"
       chdir: /tmp/node_exporter-1.1.2.linux-amd64/
-     
+
