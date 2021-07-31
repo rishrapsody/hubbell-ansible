@@ -1,4 +1,4 @@
 ---
 ansible_host: "192.168.70.10"
-ansible_user: "test"
-ansible_password: "test"
+ansible_user: "rishrapsody"
+ansible_password: "rishrapsody"

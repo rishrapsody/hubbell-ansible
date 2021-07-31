@@ -53,11 +53,11 @@
 
 
 - name: "Changes on firewall"
-  hosts: plano_fw,shelton_fw
+  hosts: firewall
 
   tasks:
   - name: "Enable node-exporter on firewall"
-    ansible.builtin.shell:
+    shell: 
       cmd: ./node_exporter &
-      chdir: node_exporter-1.1.2.linux-amd64/
+      chdir: /tmp/node_exporter-1.1.2.linux-amd64/
      
