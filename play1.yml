@@ -67,7 +67,7 @@
         register: int_output
       - name: Parse Genie
         debug:
-          msg: "{{ int_output['stdout'][0] | parse_genie(command='show ip interface brief', os=ansible_network_os) }}"
+          msg: "{{ int_output['stdout'] | parse_genie(command='show ip interface brief', os='ios') }}"
         delegate_to: localhost
     when: ansible_network_os == 'ios'
     tags: int_fetch
