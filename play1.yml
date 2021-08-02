@@ -58,16 +58,16 @@
           dest: "outputs/Interfaces/{{inventory_hostname}}_int.csv"
         delegate_to: localhost
       - name: Read in parse_genie role
-	        include_role:
-	        name: clay584.parse_genie
-      - name: Get Data From Device
-	      cli_command:
+      	include_role:
+	  name: clay584.parse_genie
+      - name: Get Data From Devive
+        cli_command:
           command: show ip int brief
-	      register: int_output
+	register: int_output
       - name: Parse Genie
-	      debug:
-	        msg: "{{ int_output['stdout'][0] | parse_genie(command='show ip interface brief', os=ansible_network_os) }}"
-	      delegate_to: localhost
+        debug:
+	  msg: "{{ int_output['stdout'][0] | parse_genie(command='show ip interface brief', os=ansible_network_os) }}"
+	delegate_to: localhost
     when: ansible_network_os == 'ios'
     
   - name: "Configure SNMP"
