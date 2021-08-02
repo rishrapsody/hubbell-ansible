@@ -63,12 +63,13 @@
           name: clay584.parse_genie
       - name: Get Data From Devive
         cli_command:
-          command: show ip int brief
+          command: show ip int brief | exclude unassigned
         register: int_output
       - name: Parse Genie
         debug:
           msg: "{{ int_output['stdout'] | parse_genie(command='show ip interface brief', os='ios') }}"
         delegate_to: localhost
+        register: interfaces
     when: ansible_network_os == 'ios'
     tags: int_fetch
 
