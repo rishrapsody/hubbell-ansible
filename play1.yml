@@ -39,7 +39,18 @@
           path: outputs/BGP_ASN_INFO.txt
           line: "{{ inventory_hostname }} : {{ my_var[0] }}"   
     when: ansible_network_os == 'ios'
+    
+  - name: "Create Interfaces directory"
+    file:
+      path: "outputs/Interfaces"
+      state: directory
+    run_once: true
    
+  - name: "Fetch Interface and create CSV"
+    block:
+    
+    when: ansible_network_os == 'ios'
+    
   - name: "Configure SNMP"
     cli_config: 
       config: "{{ lookup('template', 'snmp_template.j2') }}"
