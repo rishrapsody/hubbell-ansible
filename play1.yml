@@ -47,6 +47,13 @@
     run_once: true
     tags: int_fetch
 
+  - name: "Configure Loopback"
+    cli_config:
+      config: "{{ lookup('template', 'loopback_template.j2') }}"
+    with_items:
+      - { name: 'Loopback127', subnet: '192.168.127.0/24' }
+      - { name: 'Loopback128', subnet: '192.168.128.0/24' }
+
   - name: "Fetch Interface and create CSV"
     block:
       - name: "Create Router file"
@@ -70,6 +77,12 @@
           msg: "{{ int_output['stdout'] | parse_genie(command='show ip interface brief', os='ios') }}"
         delegate_to: localhost
         register: interfaces
+      - name: Push interface to file
+        lineinfile:
+          line: "{{item.key}},{{item.value.ip_address}},{{item.value.protocol}},{{item.value.status}}"
+          path: outputs/Interfaces/{{inventory_hostname}}_int.csv
+        loop: "{{ interfaces.msg.interface | dict2items }}"
+        delegate_to: localhost
     when: ansible_network_os == 'ios'
     tags: int_fetch
 
@@ -77,12 +90,12 @@
     cli_config: 
       config: "{{ lookup('template', 'snmp_template.j2') }}"
       
-  - name: "Configure Loopback"
-    cli_config:
-      config: "{{ lookup('template', 'loopback_template.j2') }}"
-    with_items:
-      - { name: 'Loopback127', subnet: '192.168.127.0/24' }
-      - { name: 'Loopback128', subnet: '192.168.128.0/24' }
+#  - name: "Configure Loopback"
+#    cli_config:
+#      config: "{{ lookup('template', 'loopback_template.j2') }}"
+#    with_items:
+#      - { name: 'Loopback127', subnet: '192.168.127.0/24' }
+#      - { name: 'Loopback128', subnet: '192.168.128.0/24' }
 
 
 - name: "Changes on firewall"

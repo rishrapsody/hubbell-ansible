@@ -1,0 +1,6 @@
+Interface,IPAddress,Status,Protocol
+FastEthernet0/0,192.0.2.3,up,up
+FastEthernet1/0,10.10.10.2,up,up
+Loopback1,10.10.40.1,up,up
+Loopback127,192.168.127.95,up,up
+Loopback128,192.168.128.219,up,up

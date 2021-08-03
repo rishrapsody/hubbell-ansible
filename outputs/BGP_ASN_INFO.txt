@@ -1,10 +1,10 @@
-aryaka_core : 56278
 plano_core : 123
-mpls_spoke : 333
+dmvpn : 789
 aryaka_spoke : 11179
+plano_ntt_r2 : 40
 shelton_r1 : 10
 shelton_core : 456
-mpls_core : 20
 plano_ntt_r1 : 30
-plano_ntt_r2 : 40
-dmvpn : 789
+mpls_core : 20
+aryaka_core : 56278
+mpls_spoke : 333
