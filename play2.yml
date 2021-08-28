@@ -1,7 +1,7 @@
 
 ---
 - name: "Playbook on routers"
-  hosts: aryaka_core
+  hosts: hubbell,aryaka,mpls
   connection: network_cli
 
   tasks:
@@ -9,7 +9,6 @@
     ios_bgp:
       config:
         bgp_as: "{{ hostvars[inventory_hostname].bgp.asn }}"
-#        bgp_as: 56278
         address_family:
         - afi: ipv4
           redistribute: 
@@ -24,4 +23,11 @@
   - name: set_fact
     set_fact:
       var1: "{{ ansible_net_all_ipv4_addresses }}"
-
+    changed_when: true
+    notify: write_fact
+   
+  handlers:
+    - name: write_fact
+      copy:
+        content: "{{ var1 | to_nice_yaml }}" 
+        dest: "outputs/{{inventory_hostname}}_interfaces_fact.yml"
