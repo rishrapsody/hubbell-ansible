@@ -1,0 +1,27 @@
+
+---
+- name: "Playbook on routers"
+  hosts: aryaka_core
+  connection: network_cli
+
+  tasks:
+  - name: Configure BGP redistribute connected on all
+    ios_bgp:
+      config:
+        bgp_as: "{{ hostvars[inventory_hostname].bgp.asn }}"
+#        bgp_as: 56278
+        address_family:
+        - afi: ipv4
+          redistribute: 
+          - protocol: connected
+
+  - name: Gather L3 interfaces
+    ios_facts:
+      gather_subset: 'interfaces'
+      gather_network_resources: l3_interfaces
+
+
+  - name: set_fact
+    set_fact:
+      var1: "{{ ansible_net_all_ipv4_addresses }}"
+
