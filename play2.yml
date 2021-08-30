@@ -27,7 +27,38 @@
     notify: write_fact
    
   handlers:
-    - name: write_fact
+    - name: write_fact1
       copy:
-        content: "{{ var1 | to_nice_yaml }}" 
-        dest: "outputs/{{inventory_hostname}}_interfaces_fact.yml"
+        content: "{{ var1 | to_yaml }}" 
+        dest: "outputs/Interfaces/{{inventory_hostname}}_interfaces_fact.txt"
+
+    - name: write_fact2
+      set_fact:
+        data: "{{ item }}"
+      loop: "{{ var1 }}"
+
+    - name: write_fact
+      lineinfile:
+        path: outputs/Interfaces/int_data.txt
+        line: "{{ item }}"
+        create: yes
+      loop: "{{ var1 }}"
+
+- name: "ios Ping"
+  connection: network_cli
+  hosts: hubbell,aryaka,mpls
+
+  vars:
+    filepath: 'outputs/Interfaces/int_data.txt'
+
+  tasks:
+  - name: "ios Ping Test"
+    ios_ping:
+      dest: "{{ item }}"
+      count: 1
+#    loop: "{{ lookup('fileglob','outputs/Interfaces/*_interfaces_fact.txt') }}"
+#    with_items: "{{ lookup('fileglob','outputs/Interfaces/aryaka_core_interfaces_fact.txt',wantlist=True) }}"
+#      - outputs/Interfaces/aryaka_core_interfaces_fact.txt
+#    loop: "{{ lookup('file',filepath) | flatten }}"
+#    with_items: "{{ lookup('file',filepath, wantlist=True) }}"
+    with_lines: cat outputs/Interfaces/int_data.txt 
