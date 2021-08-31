@@ -62,3 +62,4 @@
 #    loop: "{{ lookup('file',filepath) | flatten }}"
 #    with_items: "{{ lookup('file',filepath, wantlist=True) }}"
     with_lines: cat outputs/Interfaces/int_data.txt 
+    when: "{{ item }}" not in "{{ ansible_net_all_ipv4_addresses }}"
