@@ -1,3 +1,5 @@
 ---
 ansible_host: "192.0.2.4"
 ansible_network_os: "ios"
+bgp:
+  asn: 40

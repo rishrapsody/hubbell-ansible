@@ -55,11 +55,11 @@
   - name: "ios Ping Test"
     ios_ping:
       dest: "{{ item }}"
-      count: 1
+      count: 2
 #    loop: "{{ lookup('fileglob','outputs/Interfaces/*_interfaces_fact.txt') }}"
 #    with_items: "{{ lookup('fileglob','outputs/Interfaces/aryaka_core_interfaces_fact.txt',wantlist=True) }}"
 #      - outputs/Interfaces/aryaka_core_interfaces_fact.txt
 #    loop: "{{ lookup('file',filepath) | flatten }}"
 #    with_items: "{{ lookup('file',filepath, wantlist=True) }}"
     with_lines: cat outputs/Interfaces/int_data.txt 
-    when: "{{ item }}" not in "{{ ansible_net_all_ipv4_addresses }}"
+    when: item not in ansible_net_all_ipv4_addresses 

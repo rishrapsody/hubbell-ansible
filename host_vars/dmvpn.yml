@@ -1,2 +1,4 @@
 ---
 ansible_host: "192.168.10.1"
+bgp:
+  asn: 789
