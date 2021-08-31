@@ -5,6 +5,9 @@
   connection: network_cli
 
   tasks:
+  - name: Include Loopback Config Task 
+    include_tasks: configure_loopback.yml
+
   - name: Configure BGP redistribute connected on all
     ios_bgp:
       config:
