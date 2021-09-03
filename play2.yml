@@ -1,12 +1,11 @@
-
 ---
 - name: "Playbook on routers"
   hosts: hubbell,aryaka,mpls
   connection: network_cli
 
   tasks:
-  - name: Include Loopback Config Task 
-    include_tasks: configure_loopback.yml
+#  - name: Include Loopback Config Task 
+#    include_tasks: configure_loopback.yml
 
   - name: Configure BGP redistribute connected on all
     ios_bgp:
@@ -55,14 +54,30 @@
     filepath: 'outputs/Interfaces/int_data.txt'
 
   tasks:
-  - name: "ios Ping Test"
+  - name: "Create file"
+    file:
+      path: "outputs/{{inventory_hostname}}_ping_result.csv"
+      state: touch
+    delegate_to: localhost
+  - copy:
+      content: "Destination,Result,RTT"
+      dest: "outputs/{{inventory_hostname}}_ping_result.csv"
+    delegate_to: localhost
+#  - name: "Ping and create result file"
+#    block:
+  - name: "Ping Task"
     ios_ping:
       dest: "{{ item }}"
       count: 2
-#    loop: "{{ lookup('fileglob','outputs/Interfaces/*_interfaces_fact.txt') }}"
-#    with_items: "{{ lookup('fileglob','outputs/Interfaces/aryaka_core_interfaces_fact.txt',wantlist=True) }}"
-#      - outputs/Interfaces/aryaka_core_interfaces_fact.txt
-#    loop: "{{ lookup('file',filepath) | flatten }}"
-#    with_items: "{{ lookup('file',filepath, wantlist=True) }}"
     with_lines: cat outputs/Interfaces/int_data.txt 
     when: item not in ansible_net_all_ipv4_addresses 
+    notify: write_data
+      
+  handlers:
+    - name: write_data
+      lineinfile:
+        line: "12,3,2,3"
+        path: "outputs/{{inventory_hostname}}_ping_result.csv"
+      delegate_to: localhost
+#    with_lines: cat outputs/Interfaces/int_data.txt
+#    when: item not in ansible_net_all_ipv4_addresses

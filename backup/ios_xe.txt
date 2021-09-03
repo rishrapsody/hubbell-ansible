@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 7343 bytes
+Current configuration : 6688 bytes
 !
-! Last configuration change at 06:35:03 UTC Fri Jul 23 2021 by developer
+! Last configuration change at 11:25:05 UTC Tue Aug 3 2021 by developer
 !
 version 17.3
 service timestamps debug datetime msec
@@ -171,20 +171,6 @@ redundancy
 ! 
 !
 !
-interface Loopback77
- ip address 77.77.77.77 255.255.255.255
-!
-interface Loopback99
- no ip address
-!
-interface Loopback111
- ip address 111.77.77.77 255.255.255.255
-!
-interface VirtualPortGroup0
- ip address 3.3.3.3 255.255.255.0
- no mop enabled
- no mop sysid
-!
 interface GigabitEthernet1
  description MANAGEMENT INTERFACE - DON'T TOUCH ME
  ip address 10.10.20.48 255.255.255.0
@@ -193,30 +179,27 @@ interface GigabitEthernet1
  no mop sysid
 !
 interface GigabitEthernet2
- description Configured via POSTMAN
- ip address 3.3.3.3 255.255.255.254 secondary
- ip address 2.2.2.2 255.255.255.0
+ description Network Interface
+ no ip address
  shutdown
  negotiation auto
  no mop enabled
  no mop sysid
 !
 interface GigabitEthernet3
- description Network Interface 1223425
- ip address 192.168.1.5 255.255.255.0
+ description Network Interface
+ no ip address
+ shutdown
  negotiation auto
  no mop enabled
  no mop sysid
 !
-iox
 ip forward-protocol nd
-ip tcp window-size 65536
 ip http server
 ip http authentication local
 ip http secure-server
 !
 ip route 0.0.0.0 0.0.0.0 GigabitEthernet1 10.10.20.254
-ip ssh window-size 65536
 ip ssh rsa keypair-name ssh-key
 ip ssh version 2
 ip scp server enable
@@ -262,13 +245,6 @@ call-home
 !
 !
 !
-!
-app-hosting appid guestshell
- app-vnic gateway0 virtualportgroup 0 guest-interface 0
-  guest-ipaddress 3.3.3.5 netmask 255.255.255.0
- app-vnic management guest-interface 0
-  guest-ipaddress 192.168.0.51 netmask 255.255.255.0
- name-server0 8.8.8.8
 netconf-yang
 restconf
 end

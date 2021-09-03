@@ -1,10 +1,10 @@
 !Command: show running-config
-!Running configuration last done at: Mon Jul 26 09:09:53 2021
-!Time: Mon Jul 26 09:46:31 2021
+!Running configuration last done at: Tue Aug  3 07:48:59 2021
+!Time: Tue Aug  3 09:33:23 2021
 
 version 9.3(3) Bios:version  
-hostname Sandbox_nxos
-vdc Sandbox_nxos id 1
+hostname sbx_nxosv
+vdc sbx_nxosv id 1
   limit-resource vlan minimum 16 maximum 4094
   limit-resource vrf minimum 2 maximum 4096
   limit-resource port-channel minimum 0 maximum 511
@@ -27,31 +27,49 @@ feature netconf
 feature restconf
 feature grpc
 feature interface-vlan
+feature vn-segment-vlan-based
+feature lacp
 feature lldp
 feature bfd
 feature sla sender
 feature telemetry
 
+no password strength-check
 username admin password 5 $5$QHsjkRNS$AmVcv7uxx4xYtWYCiinb.T5Jmkzm1rQ7G0ccMjXqzIC  role network-admin
-username testuser1 password 5 !  role network-operator
+username testuser1 password 5 $5$VpqVhIQ9$zjd6Ck7RP.5FUsb6qz0AQtlhT5TB6GILLLqMO7Th8M3  role network-operator
 username testuser1 passphrase  lifetime 99999 warntime 14 gracetime 3
-username testuser2 password 5 !  role network-operator
+username testuser2 password 5 $5$rPqUxIan$92IEUby8f1fbIWkWy5uKvJxKwD5/um4zO/53jAnRgw1  role network-operator
 username testuser2 passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-test1 password 5 $5$FjhZbk1E$/SmnKjHyeDkLnp31E9DcarDEfGxzS9Soffb67Kmc.p7  role network-operator
+username sa-test1 passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-maria password 5 $5$HAKMMO$2f0oKzFCyVmbt476ddeNJmf4iBVhEFxGe3yqJMDlPI6  role network-operator
+username sa-maria role priv-15
+username sa-maria role priv-0
+username sa-maria passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-maria2 password 5 $5$BACMHE$dICboYf64PMM6hfv/Kg.myHf07GFz1LrmSIzU9EKTy0  role network-operator
+username sa-maria2 role priv-0
+username sa-maria2 passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-maria3 password 5 $5$ECNOOL$fKN11jgY5cgQ0js8UZdZQRobgFrMbzGT7a1.x9//ILB  role network-operator
+username sa-maria3 role priv-14
+username sa-maria3 passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-maria4 password 5 $5$AGMBNE$usWRWZqP7TcD0rSINaVQWYP30lZJ4f17PTlk2sPief0  role network-operator
+username sa-maria4 role priv-10
+username sa-maria4 passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-maria5 password 5 $5$AJAKCF$Qpp0M3nAJYsrOMPETOyaQXEeUz2B7b45TDD1oTOv4yB  role network-operator
+username sa-maria5 role priv-11
+username sa-maria5 passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-maria6 password 5 $5$HLJINO$WjVMkr0AnfDxxU53XnZ4tl2wUOGDWOlrWBMO55P3/K.  role network-operator
+username sa-maria6 role priv-13
+username sa-maria6 passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $5$ECNECC$Ai.znKBcwa/qxUHmJM2iRS5GmFhZWQn4Q1gb8ekwGM/  role network-operator
+username cisco role priv-15
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username sa-admin password 5 $5$xCRI.t84$nBEFGIGXkOl5.xD8YvmjoMi50RL0tBpbLQhBJJ.nDV4  role network-admin
+username sa-admin passphrase  lifetime 99999 warntime 14 gracetime 3
+username testuser3 password 5 $5$djK/oPRi$ueWQnuJB6ejIcx03nUF7vNSudZRv6YoPztaR1uqJ/d4  role network-operator
+username testuser3 passphrase  lifetime 99999 warntime 14 gracetime 3
 
-banner motd ^
-Welcome to the DevNet Always On Sandbox for Open NX-OS
-
-This is a shared sandbox available for anyone to use to
-test APIs, explore features, and test scripts.  Please
-keep this in mind as you use it, and respect others use.
-
-The following programmability features are already enabled:
-  - NX-API
-  - NETCONF, RESTCONF, gRPC
-  - Native NX-OS and OpenConfig YANG Models
-
-Thanks for stopping by.
-^
+banner motd hi th
 
 ip domain-lookup
 radius-server host 172.16.1.12 key 7 "VwritosWsgsziGio" authentication accounting 
@@ -60,17 +78,37 @@ aaa group server radius AAA-Radius-Group
     server 172.16.1.12 
     server 172.16.1.13 
     use-vrf management
-ip access-list gnoc_ro
-  10 permit ip 192.168.0.101/24 any 
-  20 permit ip 192.168.0.101/26 any 
-  30 permit ip 192.168.0.101/32 any 
-  40 permit ip 192.168.0.101/32 any 
-  50 permit ip 192.168.0.101/32 any 
-  60 permit ip 192.168.0.101/32 any 
+crypto key generate rsa label Router exportable modulus 512
+crypto ca trustpoint admin-ca 
+     rsakeypair Router 
+     revocation-check  crl 
+ip access-list pontosync_acl_deny
+  2 permit udp 12.234.56.97/13 13.235.46.97/9 
 copp profile strict
 snmp-server contact DevNet-Sandbox
 snmp-server location Always-On-Sandbox
 snmp-server source-interface traps mgmt0
+snmp-server user admin network-admin auth md5 0xb2fcc55bf9f3dcf060451f7eb17c1663 priv 0xb2fcc55bf9f3dcf060451f7eb17c1663 localizedkey
+snmp-server user cisco network-operator auth md5 0x0f45d13ca7473b4f0816c6ab161a044b priv 0x0f45d13ca7473b4f0816c6ab161a044b localizedkey
+snmp-server user cisco priv-15
+snmp-server user sa-admin network-admin auth md5 0x0c56720fa572754f46f8d0c4703cdb21 priv 0x0c56720fa572754f46f8d0c4703cdb21 localizedkey
+snmp-server user sa-maria network-operator auth md5 0x0c56720fa572754f46f8d0c4703cdb21 priv 0x0c56720fa572754f46f8d0c4703cdb21 localizedkey
+snmp-server user sa-maria priv-0
+snmp-server user sa-maria priv-15
+snmp-server user sa-test1 network-operator auth md5 0x8e8dce1dc7aff1241d40bb48a3b201f3 priv 0x8e8dce1dc7aff1241d40bb48a3b201f3 localizedkey
+snmp-server user sa-maria2 network-operator auth md5 0x0c56720fa572754f46f8d0c4703cdb21 priv 0x0c56720fa572754f46f8d0c4703cdb21 localizedkey
+snmp-server user sa-maria2 priv-0
+snmp-server user sa-maria3 network-operator auth md5 0x0c56720fa572754f46f8d0c4703cdb21 priv 0x0c56720fa572754f46f8d0c4703cdb21 localizedkey
+snmp-server user sa-maria3 priv-14
+snmp-server user sa-maria4 network-operator auth md5 0x0c56720fa572754f46f8d0c4703cdb21 priv 0x0c56720fa572754f46f8d0c4703cdb21 localizedkey
+snmp-server user sa-maria4 priv-10
+snmp-server user sa-maria5 network-operator auth md5 0x0c56720fa572754f46f8d0c4703cdb21 priv 0x0c56720fa572754f46f8d0c4703cdb21 localizedkey
+snmp-server user sa-maria5 priv-11
+snmp-server user sa-maria6 network-operator auth md5 0x0c56720fa572754f46f8d0c4703cdb21 priv 0x0c56720fa572754f46f8d0c4703cdb21 localizedkey
+snmp-server user sa-maria6 priv-13
+snmp-server user testuser1 network-operator auth md5 0x2b41943a291bad1e9ccf2b0b40c889c2 priv 0x2b41943a291bad1e9ccf2b0b40c889c2 localizedkey
+snmp-server user testuser2 network-operator auth md5 0xbc45151a6c51210b4a22abebbb5a394b priv 0xbc45151a6c51210b4a22abebbb5a394b localizedkey
+snmp-server user testuser3 network-operator auth md5 0xbc45151a6c51210b4a22abebbb5a394b priv 0xbc45151a6c51210b4a22abebbb5a394b localizedkey
 snmp-server user admin auth md5 0xe296d8d231ffa9be6276fd4c513b40a8 priv 0xe296d8d231ffa9be6276fd4c513b40a8 localizedkey engineID 128:0:0:9:3:0:187:44:252:27:1
 snmp-server host 192.168.0.102 traps version 2c NXAPI2
 snmp-server host 192.168.0.101 traps version 2c NXAPI2
@@ -109,39 +147,78 @@ snmp-server community DevNetSandboxWriteSNMP group network-admin
 snmp-server community NXAPI77999 use-acl gnoc_ro
 snmp-server community NXAPI1234567 use-acl gnoc_ro
 snmp-server community NXAPI2 use-acl gnoc_ro
-ntp server 172.16.0.1 use-vrf default
+ntp server 132.163.97.4 use-vrf default
 ntp peer 172.16.1.11 use-vrf management key 1
 ntp peer 172.16.1.12 use-vrf management key 1
 ntp source-interface mgmt0
 ntp authenticate
 ntp authentication-key 1 md5 QPTFmtc 7
 
-vlan 1-9,100-105,501
+vlan 1-10,20,30,40,50,90-91,100-150,201-203,300-400,501
 vlan 2
   name 
+vlan 10
+  name Netmiko_VLAN_10
+vlan 20
+  name Netmiko_VLAN_20
+vlan 30
+  name Netmiko_VLAN_30
+vlan 40
+  name Netmiko_VLAN_40
+vlan 50
+  name Netmiko_VLAN_50
+vlan 90
+  name PYTHON_90
+vlan 91
+  name PYTHON_91
 vlan 100
   name mgmt
 vlan 101
-  name LL_VLAN_DEMO1
+  name TEST
 vlan 102
   name dev
 vlan 103
   name test
 vlan 104
   name security
-vlan 105
-  name iot
+vlan 201
+  name Web_VLAN
+vlan 202
+  name App_VLAN
+vlan 203
+  name Data_VLAN
 vlan 501
   name NX-API-REST1
 
+ip prefix-list test_subnet seq 5 permit 10.10.10.0/25 ge 32 
+route-map RM_TEST deny 10
+  match ip address prefix-list test_subnet 
+  match tag 64874 
+route-map RM_TEST permit 65535
+route-map deny permit 10
+vrf context hosting
+  address-family ipv4 unicast
+    import map RM_TEST
 vrf context management
   ip name-server 8.8.8.8 8.8.4.4
   ip route 0.0.0.0/0 10.10.20.254
 
+
 interface Vlan1
+
+interface Vlan3
+  no shutdown
+  ip address 33.33.33.33/24
+
+interface Vlan20
+
+interface Vlan91
+  no shutdown
+  ip address 192.168.91.1/24
 
 interface Vlan100
   description mgmt svi - DEMO PLEASE DON'T TOUCH
+  no shutdown
   ip address 172.16.100.1/24
   ip router ospf 1 area 0.0.0.0
 
@@ -175,27 +252,32 @@ interface port-channel11
   switchport trunk allowed vlan 100-110
 
 interface Ethernet1/1
+  description no Server1
   switchport mode trunk
   switchport trunk allowed vlan 100-110
   channel-group 11
 
 interface Ethernet1/2
+  description no Server2
   switchport mode trunk
   switchport trunk allowed vlan 100-110
   channel-group 11
 
 interface Ethernet1/3
+  description no Server3
 
 interface Ethernet1/4
+  description no Server4
   switchport monitor
 
 interface Ethernet1/5
-  description L3 Link
+  description no Server5
   no switchport
   ip address 172.16.1.1/30
   ip ospf network broadcast
   no ip ospf passive-interface
   ip router ospf 1 area 0.0.0.0
+  no shutdown
 
 interface Ethernet1/6
 
@@ -209,10 +291,13 @@ interface Ethernet1/10
   switchport access vlan 109
 
 interface Ethernet1/11
+  switchport access vlan 50
+  switchport block unicast 
 
 interface Ethernet1/12
 
 interface Ethernet1/13
+  switchport access vlan 900
 
 interface Ethernet1/14
 
@@ -251,6 +336,11 @@ interface Ethernet1/28
 interface Ethernet1/29
 
 interface Ethernet1/30
+  description created by Y
+  no switchport
+  mac-address 00bb.2cfc.1b08
+  ip address 172.16.102.11/24
+  no shutdown
 
 interface Ethernet1/31
 
@@ -261,6 +351,7 @@ interface Ethernet1/33
 interface Ethernet1/34
 
 interface Ethernet1/35
+  switchport access vlan 66
 
 interface Ethernet1/36
 
@@ -303,6 +394,7 @@ interface Ethernet1/54
 interface Ethernet1/55
 
 interface Ethernet1/56
+  switchport access vlan 20
 
 interface Ethernet1/57
 
@@ -326,22 +418,48 @@ interface mgmt0
   ip address 10.10.20.95/24
 
 interface loopback1
-  ip address 172.16.0.1/32
+  description YAY
+  ip address 1.1.1.1/32
+
+interface loopback3
+  description YAY
 
 interface loopback5
+  description Jenny Goya
+
+interface loopback9
+  description WHATEVER
+
+interface loopback15
+  ip address 15.15.15.15/32
 
 interface loopback21
+  description WHATEVER
+  ip address 3.3.3.3/24
 
 interface loopback22
 
 interface loopback23
+  description test test
+  ip address 27.27.27.27/24
 
 interface loopback24
-
-interface loopback25
+  description TINTIN
 
 interface loopback30
   description My Learning Lab Loopback
+
+interface loopback31
+  description WHATEVER
+  ip address 2.2.2.2/24
+
+interface loopback33
+
+interface loopback40
+  description My Learning Lab Loopback
+
+interface loopback55
+  description Revive me Jett!!!
 
 interface loopback101
   ip address 192.168.232.0/32
@@ -349,12 +467,52 @@ interface loopback101
 interface loopback102
   ip address 192.168.2.1/24
 
+interface loopback105
+  description Full intf config via NETCONF
+  ip address 10.100.99.1/24
+
+interface loopback106
+  description Full intf config via NETCONF
+  ip address 10.101.99.1/24
+
+interface loopback127
+  ip address 192.168.127.124/32
+
+interface loopback128
+  ip address 192.168.128.245/32
+
 interface loopback200
+  ip address 5.5.5.5/24
   ipv6 address 2001:abe:cafe:9::1/64
+
+interface loopback201
+  description Interface added via NETCONF
+  ip address 201.201.201.201/32
+
+interface loopback202
+  description Interface added via NETCONF
+
+interface loopback500
+  ip address 9.9.9.9/24
+
+interface loopback998
+  description WHATEVER
+  ip address 7.7.7.7/24
+
+interface loopback999
+  description WHATEVER
+  ip address 4.4.4.4/24
+
+interface loopback1000
+  ip address 10.10.10.10/32
+
+interface loopback1001
+  ip address 202.202.202.200/32
 line console
   exec-timeout 0
   terminal width  511
 line vty
+  exec-timeout 0
 boot nxos bootflash:/nxos.9.3.3.bin sup-1
 router ospf 1
   router-id 172.16.0.1
@@ -366,6 +524,8 @@ router bgp 65535
     network 172.16.0.0/16
   neighbor 172.16.0.2
     remote-as 65535
+grpc certificate cert-1
+grpc port 50051
 monitor session 1 
   source interface Ethernet1/3 both
   destination interface Ethernet1/4
@@ -378,6 +538,7 @@ ip sla 1
     frequency 10
 ip sla schedule 1 start-time now
 logging server 192.168.0.101 6
+no logging console
 
 telemetry
   certificate /bootflash/server.key localhost
