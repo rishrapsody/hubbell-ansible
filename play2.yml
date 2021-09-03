@@ -79,6 +79,6 @@
   #       line: "{{item}}"
   #       path: "outputs/{{inventory_hostname}}_ping_result.csv"
   #     delegate_to: localhost
-   - include_task: ping_task.yml
-     with_lines: cat outputs/Interfaces/int_data.txt
-     when: item not in ansible_net_all_ipv4_addresses
+  - include_tasks: ping_task.yml
+    with_lines: cat outputs/Interfaces/int_data.txt
+    when: item not in ansible_net_all_ipv4_addresses
