@@ -60,7 +60,7 @@
       state: touch
     delegate_to: localhost
   - copy:
-      content: "Destination,Result,RTT"
+      content: "Destination,Result,PacketLoss,RTT"
       dest: "outputs/{{inventory_hostname}}_ping_result.csv"
     delegate_to: localhost
 #  - name: "Ping and create result file"

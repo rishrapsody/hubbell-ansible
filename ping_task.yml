@@ -3,9 +3,10 @@
   ios_ping:
     dest: "{{ item }}"
     count: 2
-    state: present 
+    state: present
+  register: var1 
 - name: write_data
   lineinfile:
-    line: "{{item}}"
+    line: "{{item}},{{'Pass' if var1.packet_loss.split('%')[0] | int != 100 else 'Fail'}},{{var1.packet_loss}},{{var1.rtt}}"
     path: "outputs/{{inventory_hostname}}_ping_result.csv"
   delegate_to: localhost
